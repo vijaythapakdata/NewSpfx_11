@@ -6,6 +6,7 @@ import Counterfile from './CounterFile';
 import UseEffectHooks from './UseEffectHooks';
 import Browserload from './Browswerload';
 import TableComponent from './TableComponent';
+import DetailsListComponent from './DetailistComponent';
 // import { escape } from '@microsoft/sp-lodash-subset';
 // import { useState } from 'react';
 const TrainingWebPart:React.FC<ITrainingWebPartProps>=()=>{
@@ -17,6 +18,8 @@ const TrainingWebPart:React.FC<ITrainingWebPartProps>=()=>{
   }
   return (
     <>
+    {/* Detailist */}
+    <DetailsListComponent pageSize={1}/>
     <p>Count:{count}</p>
     <PrimaryButton text='Count' onClick={()=>setCount(count+1)}/>
       <br/>

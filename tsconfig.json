@@ -22,9 +22,9 @@
       "webpack-env"
     ],
     "lib": [
-      "es5",
+      "ES2018",
       "dom",
-      "es2015.collection",
+      "ES2016.Array.Include",
       "es2015.promise"
     ]
   },
