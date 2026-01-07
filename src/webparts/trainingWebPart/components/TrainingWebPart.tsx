@@ -5,6 +5,7 @@ import { PrimaryButton, TextField } from '@fluentui/react';
 import Counterfile from './CounterFile';
 import UseEffectHooks from './UseEffectHooks';
 import Browserload from './Browswerload';
+import TableComponent from './TableComponent';
 // import { escape } from '@microsoft/sp-lodash-subset';
 // import { useState } from 'react';
 const TrainingWebPart:React.FC<ITrainingWebPartProps>=()=>{
@@ -30,6 +31,9 @@ const TrainingWebPart:React.FC<ITrainingWebPartProps>=()=>{
 <Counterfile/>
 <UseEffectHooks/>
 <Browserload/>
+
+<br/>
+<TableComponent/>
     </>
   )
 }

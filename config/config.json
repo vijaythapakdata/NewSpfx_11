@@ -9,10 +9,19 @@
           "manifest": "./src/webparts/trainingWebPart/TrainingWebPartWebPart.manifest.json"
         }
       ]
+    },
+    "form-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/form/FormWebPart.js",
+          "manifest": "./src/webparts/form/FormWebPart.manifest.json"
+        }
+      ]
     }
   },
   "externals": {},
   "localizedResources": {
-    "TrainingWebPartWebPartStrings": "lib/webparts/trainingWebPart/loc/{locale}.js"
+    "TrainingWebPartWebPartStrings": "lib/webparts/trainingWebPart/loc/{locale}.js",
+    "FormWebPartStrings": "lib/webparts/form/loc/{locale}.js"
   }
 }
