@@ -1,43 +1,105 @@
 import * as React from 'react';
-import styles from './Form.module.scss';
+// import styles from './Form.module.scss';
 import type { IFormProps } from './IFormProps';
-import { escape } from '@microsoft/sp-lodash-subset';
+// import { escape } from '@microsoft/sp-lodash-subset';
+import { Accordion } from "@pnp/spfx-controls-react/lib/Accordion";
+import {  PeoplePicker, PrincipalType } from "@pnp/spfx-controls-react/lib/PeoplePicker";
+import {sp} from "@pnp/sp/presets/all";
+// dummy data
 
-export default class Form extends React.Component<IFormProps> {
-  public render(): React.ReactElement<IFormProps> {
-    const {
-      description,
-      isDarkTheme,
-      environmentMessage,
-      hasTeamsContext,
-      userDisplayName
-    } = this.props;
+const sampleItems=[
+    {
+        Question:"What is SPfx?",
+        Response:"React is JavaScript library for building user interface",
+        Langue:{
+            Nom:"English"
+        }
+    },
+        {
+            Question:"What os Pnp?",
+            Response:"PnP provides reusable controls and librareis for SharePoint Development",
+            Langue:{
+                Nom:"French"
+            }
+,
 
-    return (
-      <section className={`${styles.form} ${hasTeamsContext ? styles.teams : ''}`}>
-        <div className={styles.welcome}>
-          <img alt="" src={isDarkTheme ? require('../assets/welcome-dark.png') : require('../assets/welcome-light.png')} className={styles.welcomeImage} />
-          <h2>Well done, {escape(userDisplayName)}!</h2>
-          <div>{environmentMessage}</div>
-          <div>Web part property value: <strong>{escape(description)}</strong></div>
-        </div>
-        <div>
-          <h3>Welcome to SharePoint Framework!</h3>
-          <p>
-            The SharePoint Framework (SPFx) is a extensibility model for Microsoft Viva, Microsoft Teams and SharePoint. It&#39;s the easiest way to extend Microsoft 365 with automatic Single Sign On, automatic hosting and industry standard tooling.
-          </p>
-          <h4>Learn more about SPFx development:</h4>
-          <ul className={styles.links}>
-            <li><a href="https://aka.ms/spfx" target="_blank" rel="noreferrer">SharePoint Framework Overview</a></li>
-            <li><a href="https://aka.ms/spfx-yeoman-graph" target="_blank" rel="noreferrer">Use Microsoft Graph in your solution</a></li>
-            <li><a href="https://aka.ms/spfx-yeoman-teams" target="_blank" rel="noreferrer">Build for Microsoft Teams using SharePoint Framework</a></li>
-            <li><a href="https://aka.ms/spfx-yeoman-viva" target="_blank" rel="noreferrer">Build for Microsoft Viva Connections using SharePoint Framework</a></li>
-            <li><a href="https://aka.ms/spfx-yeoman-store" target="_blank" rel="noreferrer">Publish SharePoint Framework applications to the marketplace</a></li>
-            <li><a href="https://aka.ms/spfx-yeoman-api" target="_blank" rel="noreferrer">SharePoint Framework API reference</a></li>
-            <li><a href="https://aka.ms/m365pnp" target="_blank" rel="noreferrer">Microsoft 365 Developer Community</a></li>
-          </ul>
-        </div>
-      </section>
-    );
-  }
+        },
+        {
+            Question:"What is React",
+            Response:"React is JavaScript library for building user interface",
+        Langue:{
+            Nom:"English"
+        }
+
+        },
+
+
+    
+]
+const Form :React.FC<IFormProps>=(props)=>{
+
+    // Bassic api request
+    React.useEffect(()=>{
+        sp.setup({
+            spfxContext:props.context as any
+        });
+        const getItems=()=>{
+            try{
+const items= sp.web.lists.getByTitle("ListName").items.select("ID","Title","Admin/Title","City/Title").
+expand("Admin","City").get();
+return items;
+            }
+            catch(err){
+console.error(err);
+            }
+        }
+        getItems();
+    },[])
+    return(
+        <>
+        
+        <h3> FAQ (Dummy Accordion)</h3>
+        {
+            sampleItems.map((item,index)=>(
+                <Accordion
+                key={index}
+                title={item.Question}
+                defaultCollapsed={true}
+                className={"itemCell"}
+                collapsedIcon={"Rocket"} expandedIcon={"InkingTool"}
+                >
+<div  className={"itemContent"}>
+
+ <div  className={"itemResponse"}>
+    {item.Response}
+    </div>   
+</div>
+<div  className={"itemIndex"}>
+{`Langue:${item.Langue.Nom}`}  
+</div>
+
+                </Accordion>
+            ))
+        }
+        {/* People Picker */}
+
+        <hr/>
+
+        <PeoplePicker
+    context={props.context as any}
+    titleText="User Name"
+    personSelectionLimit={1}
+    showtooltip={true}
+    required={true}
+    disabled={true}
+  ensureUser={true}
+  defaultSelectedUsers={[props.context.pageContext.user.displayName]}
+   webAbsoluteUrl={props.context.pageContext.web.absoluteUrl}
+    principalTypes={[PrincipalType.User]}
+   />
+   <span>siteurl: {props.context.pageContext.web.absoluteUrl}</span>
+   <span>Display Name:{props.context.pageContext.user.displayName}</span>
+        </>
+    )
 }
+export default Form ;
